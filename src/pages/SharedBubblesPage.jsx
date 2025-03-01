@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Bg from "../assets/LoginScreen.png";
 import Bubbles from "../components/Bubbles";
 import BubbleDetails from "../components/BubbleDetails";
+import Navigation from "../components/Navigation";
 
 const SharedBubblesPage = () => {
   const [sharedBubbles, setSharedBubbles] = useState([]);
@@ -72,6 +73,7 @@ const SharedBubblesPage = () => {
           shared={true}
         />
       )}
+      <Navigation />
     </div>
   );
 };

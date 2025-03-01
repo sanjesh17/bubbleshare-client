@@ -72,7 +72,6 @@ const Bubbles = ({ bubble, onClick, onDelete }) => {
             <FaTimes />
           </button>
 
-          {/* Share Button */}
           <button
             className="bg-white/60 backdrop-blur-2xl text-black/60 p-2 rounded-full"
             onClick={(e) => {

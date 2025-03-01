@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { FiUpload } from "react-icons/fi"; // Import upload icon
+import { FiUpload } from "react-icons/fi";
 
 const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
   const [photos, setPhotos] = useState([]);
@@ -47,7 +47,7 @@ const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
   };
 
   const handleFileUpload = async (e) => {
-    if (shared) return; // Prevent uploads for shared Bubbles
+    if (shared) return;
 
     const file = e.target.files[0];
     if (!file) return;
@@ -124,7 +124,6 @@ const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
           <p className="text-red-500 text-center">{error}</p>
         ) : (
           <div className="grid grid-cols-2 gap-4">
-            {/* Upload Button (Only for Personal Bubbles) */}
             {!shared && (
               <label
                 htmlFor="fileUpload"
@@ -143,8 +142,6 @@ const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
                 />
               </label>
             )}
-
-            {/* Image Grid */}
             {photos.length > 0 ? (
               photos.map((photo, index) => (
                 <motion.div
