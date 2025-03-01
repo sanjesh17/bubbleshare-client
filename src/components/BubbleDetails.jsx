@@ -1,3 +1,7 @@
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { FiUpload } from "react-icons/fi"; // Import upload icon
+
 const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
   const [photos, setPhotos] = useState([]);
   const [error, setError] = useState("");
@@ -11,7 +15,10 @@ const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
   const fetchPhotos = async () => {
     try {
       setLoading(true);
+      setError("");
+
       const token = localStorage.getItem("token");
+      if (!token) throw new Error("Unauthorized access");
 
       const endpoint = shared
         ? `https://bubbleshare-be.onrender.com/shared-bubbles/${bubbleId}/photos`
@@ -29,7 +36,7 @@ const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
         data.map((photo) => ({
           ...photo,
           previewUrl: `https://drive.google.com/thumbnail?id=${photo.fileId}&sz=w800`,
-          downloadUrl: `https://drive.google.com/uc?id=${photo.fileId}`, // Full resolution link
+          downloadUrl: `https://drive.google.com/uc?id=${photo.fileId}`,
         }))
       );
     } catch (err) {
@@ -40,9 +47,11 @@ const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
   };
 
   const handleFileUpload = async (e) => {
-    if (shared) return; // Prevent upload if it's a shared Bubble
+    if (shared) return; // Prevent uploads for shared Bubbles
+
     const file = e.target.files[0];
     if (!file) return;
+
     const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
       setError("Only JPG, PNG, GIF, and WEBP images are allowed.");
@@ -54,6 +63,8 @@ const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
 
     try {
       const token = localStorage.getItem("token");
+      if (!token) throw new Error("Unauthorized access");
+
       const formData = new FormData();
       formData.append("file", file);
 
@@ -93,6 +104,7 @@ const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
+        {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">
             {shared ? "Shared Bubble Images" : "Bubble Images"}
@@ -105,12 +117,14 @@ const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
           </button>
         </div>
 
+        {/* Loading / Error State */}
         {loading ? (
           <p className="text-gray-600 text-center">Loading images...</p>
         ) : error ? (
           <p className="text-red-500 text-center">{error}</p>
         ) : (
           <div className="grid grid-cols-2 gap-4">
+            {/* Upload Button (Only for Personal Bubbles) */}
             {!shared && (
               <label
                 htmlFor="fileUpload"
@@ -129,6 +143,8 @@ const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
                 />
               </label>
             )}
+
+            {/* Image Grid */}
             {photos.length > 0 ? (
               photos.map((photo, index) => (
                 <motion.div
