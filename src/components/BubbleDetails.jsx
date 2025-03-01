@@ -21,7 +21,7 @@ const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
       if (!token) throw new Error("Unauthorized access");
 
       const endpoint = shared
-        ? `https://bubbleshare-be.onrender.com/shared-bubbles/${bubbleId}/photos`
+        ? `https://bubbleshare-be.onrender.com/bubbles/${bubbleId}/photos`
         : `https://bubbleshare-be.onrender.com/bubbles/${bubbleId}/photos`;
 
       const response = await fetch(endpoint, {
