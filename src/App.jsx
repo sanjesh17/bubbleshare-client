@@ -1,17 +1,27 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import CreateBubblePage from "./pages/CreateBubblePage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { isTokenValid } from "./utils/authUtils";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        {isTokenValid() ? (
+          <Route path="/login" element={<Navigate to="/" replace />} />
+        ) : (
+          <Route path="/login" element={<LoginPage />} />
+        )}
+
+        {isTokenValid() ? (
+          <Route path="/register" element={<Navigate to="/" replace />} />
+        ) : (
+          <Route path="/register" element={<RegisterPage />} />
+        )}
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/create" element={<CreateBubblePage />} />
