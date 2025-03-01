@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import CreateBubblePage from "./pages/CreateBubblePage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SharedBubblesPage from "./pages/SharedBubblesPage";
 import { isTokenValid } from "./utils/authUtils";
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/create" element={<CreateBubblePage />} />
+          <Route path="/shared" element={<SharedBubblesPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

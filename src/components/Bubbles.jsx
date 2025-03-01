@@ -1,16 +1,48 @@
 import React, { useState } from "react";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaShareAlt } from "react-icons/fa";
 
 const Bubbles = ({ bubble, onClick, onDelete }) => {
-  const [showDelete, setShowDelete] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
   let timer;
 
   const handlePressStart = () => {
-    timer = setTimeout(() => setShowDelete(true), 600);
+    timer = setTimeout(() => setShowOptions(true), 600);
   };
 
   const handlePressEnd = () => {
     clearTimeout(timer);
+  };
+
+  const handleShare = async () => {
+    const email = prompt("Enter email to share this Bubble:");
+    if (!email) return;
+
+    setIsSharing(true);
+    try {
+      const response = await fetch(
+        `https://bubbleshare-be.onrender.com/bubbles/${bubble.folderId}/share`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Adjust if needed
+          },
+          body: JSON.stringify({ sharedWithEmail: email }),
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Bubble shared successfully!");
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (error) {
+      console.error("Error sharing bubble:", error);
+      alert("Failed to share the Bubble");
+    }
+    setIsSharing(false);
   };
 
   return (
@@ -21,22 +53,37 @@ const Bubbles = ({ bubble, onClick, onDelete }) => {
       onMouseLeave={handlePressEnd}
       onTouchStart={handlePressStart}
       onTouchEnd={handlePressEnd}
-      onClick={() => !showDelete && onClick(bubble.folderId)}
+      onClick={() => !showOptions && onClick(bubble.folderId)}
     >
-      {showDelete && (
-        <button
-          className="absolute top-2 right-2 bg-white/60 backdrop-blur-2xl text-black/60 p-2 rounded-full"
-          onClick={(e) => {
-            e.stopPropagation();
-            if (
-              window.confirm("Are you sure you want to delete this bubble?")
-            ) {
-              onDelete(bubble.folderId);
-            }
-          }}
-        >
-          <FaTimes />
-        </button>
+      {showOptions && (
+        <div className="absolute top-2 right-2 flex gap-2">
+          {/* Delete Button */}
+          <button
+            className="bg-white/60 backdrop-blur-2xl text-black/60 p-2 rounded-full"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (
+                window.confirm("Are you sure you want to delete this bubble?")
+              ) {
+                onDelete(bubble.folderId);
+              }
+            }}
+          >
+            <FaTimes />
+          </button>
+
+          {/* Share Button */}
+          <button
+            className="bg-white/60 backdrop-blur-2xl text-black/60 p-2 rounded-full"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleShare();
+            }}
+            disabled={isSharing}
+          >
+            <FaShareAlt />
+          </button>
+        </div>
       )}
       <p>{bubble.name}</p>
     </div>
