@@ -1,8 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { FiUpload } from "react-icons/fi";
-
-const BubbleDetails = ({ bubbleId, onClose }) => {
+const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
   const [photos, setPhotos] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -17,13 +13,14 @@ const BubbleDetails = ({ bubbleId, onClose }) => {
       setLoading(true);
       const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        `https://bubbleshare-be.onrender.com/bubbles/${bubbleId}/photos`,
-        {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const endpoint = shared
+        ? `https://bubbleshare-be.onrender.com/shared-bubbles/${bubbleId}/photos`
+        : `https://bubbleshare-be.onrender.com/bubbles/${bubbleId}/photos`;
+
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Failed to fetch photos");
@@ -43,6 +40,7 @@ const BubbleDetails = ({ bubbleId, onClose }) => {
   };
 
   const handleFileUpload = async (e) => {
+    if (shared) return; // Prevent upload if it's a shared Bubble
     const file = e.target.files[0];
     if (!file) return;
     const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
@@ -96,7 +94,9 @@ const BubbleDetails = ({ bubbleId, onClose }) => {
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Bubble Images</h2>
+          <h2 className="text-xl font-semibold">
+            {shared ? "Shared Bubble Images" : "Bubble Images"}
+          </h2>
           <button
             className="text-lg text-gray-600 hover:text-black"
             onClick={onClose}
@@ -111,22 +111,24 @@ const BubbleDetails = ({ bubbleId, onClose }) => {
           <p className="text-red-500 text-center">{error}</p>
         ) : (
           <div className="grid grid-cols-2 gap-4">
-            <label
-              htmlFor="fileUpload"
-              className="w-full h-56 flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-xl cursor-pointer hover:bg-gray-100"
-            >
-              <FiUpload className="text-gray-500 text-4xl mb-2" />
-              <span className="text-gray-500">
-                {uploading ? "Uploading..." : "Upload Image"}
-              </span>
-              <input
-                type="file"
-                accept="image/jpeg, image/png, image/gif, image/webp"
-                onChange={handleFileUpload}
-                className="hidden"
-                id="fileUpload"
-              />
-            </label>
+            {!shared && (
+              <label
+                htmlFor="fileUpload"
+                className="w-full h-56 flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-xl cursor-pointer hover:bg-gray-100"
+              >
+                <FiUpload className="text-gray-500 text-4xl mb-2" />
+                <span className="text-gray-500">
+                  {uploading ? "Uploading..." : "Upload Image"}
+                </span>
+                <input
+                  type="file"
+                  accept="image/jpeg, image/png, image/gif, image/webp"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                  id="fileUpload"
+                />
+              </label>
+            )}
             {photos.length > 0 ? (
               photos.map((photo, index) => (
                 <motion.div
@@ -151,7 +153,9 @@ const BubbleDetails = ({ bubbleId, onClose }) => {
                 </motion.div>
               ))
             ) : (
-              <p className="text-center text-gray-500 col-span-2"></p>
+              <p className="text-center text-gray-500 col-span-2">
+                No images available.
+              </p>
             )}
           </div>
         )}

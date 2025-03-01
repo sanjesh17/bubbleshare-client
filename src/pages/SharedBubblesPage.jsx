@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Bg from "../assets/LoginScreen.png";
 import Bubbles from "../components/Bubbles";
+import BubbleDetails from "../components/BubbleDetails";
 
 const SharedBubblesPage = () => {
   const [sharedBubbles, setSharedBubbles] = useState([]);
+  const [selectedBubbleId, setSelectedBubbleId] = useState(null);
 
   useEffect(() => {
     const fetchSharedBubbles = async () => {
@@ -56,14 +58,20 @@ const SharedBubblesPage = () => {
           >
             <Bubbles
               bubble={bubble}
-              onClick={() =>
-                console.log("View shared bubble:", bubble.folderId)
-              }
-              onDelete={null} // No delete for shared bubbles
+              onClick={() => setSelectedBubbleId(bubble.folderId)}
+              onDelete={null}
             />
           </motion.div>
         ))}
       </div>
+
+      {selectedBubbleId && (
+        <BubbleDetails
+          bubbleId={selectedBubbleId}
+          onClose={() => setSelectedBubbleId(null)}
+          shared={true}
+        />
+      )}
     </div>
   );
 };
