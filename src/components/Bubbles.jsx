@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaTimes, FaShareAlt } from "react-icons/fa";
 
-const Bubbles = ({ bubble, onClick, onDelete }) => {
+const Bubbles = ({ bubble, onClick, onDelete, shared = false }) => {
   const [showOptions, setShowOptions] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
   let timer;
@@ -26,7 +26,7 @@ const Bubbles = ({ bubble, onClick, onDelete }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Adjust if needed
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({ sharedWithEmail: email }),
         }
@@ -55,7 +55,8 @@ const Bubbles = ({ bubble, onClick, onDelete }) => {
       onTouchEnd={handlePressEnd}
       onClick={() => !showOptions && onClick(bubble.folderId)}
     >
-      {showOptions && (
+      {/* Only show delete & share for user-owned Bubbles */}
+      {!shared && showOptions && (
         <div className="absolute top-2 right-2 flex gap-2">
           {/* Delete Button */}
           <button
@@ -72,6 +73,7 @@ const Bubbles = ({ bubble, onClick, onDelete }) => {
             <FaTimes />
           </button>
 
+          {/* Share Button */}
           <button
             className="bg-white/60 backdrop-blur-2xl text-black/60 p-2 rounded-full"
             onClick={(e) => {

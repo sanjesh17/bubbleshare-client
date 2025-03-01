@@ -61,7 +61,7 @@ const SharedBubblesPage = () => {
               <Bubbles
                 bubble={bubble}
                 onClick={() => setSelectedBubbleId(bubble.folderId)}
-                onDelete={null}
+                shared={true}
               />
             </motion.div>
           ))}
