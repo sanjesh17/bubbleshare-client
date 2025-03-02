@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // For navigation
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/BUBBLE.png";
 import LoginBg from "../assets/LoginScreen.png";
 
 const Login = () => {
-  const navigate = useNavigate(); // Handles navigation
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       const response = await fetch(
@@ -29,13 +31,12 @@ const Login = () => {
         throw new Error(data.error || "Login failed");
       }
 
-      // Save token in localStorage for future requests
       localStorage.setItem("token", data.token);
-
-      // Redirect user to My Bubbles page
       navigate("/");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -64,9 +65,14 @@ const Login = () => {
         />
         <button
           type="submit"
-          className="px-12 py-3 bg-gradient-to-b from-[#5172ff] to-[#003dff] text-white rounded-3xl shadow-[0px_4px_12px_#CCCCCC] text-xl mt-4"
+          className="px-12 py-3 bg-gradient-to-b from-[#5172ff] to-[#003dff] text-white rounded-3xl shadow-[0px_4px_12px_#CCCCCC] text-xl mt-4 flex justify-center items-center"
+          disabled={loading} // Disable button while loading
         >
-          Login
+          {loading ? (
+            <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          ) : (
+            "Login"
+          )}
         </button>
       </form>
       <div className="flex items-center space-x-1 mt-2">
@@ -77,7 +83,7 @@ const Login = () => {
       </div>
       <p className="text-black/50 mt-1">Ready to dive in?</p>
       <p className="text-black/50 mt-[-6px]">Your high-res world awaits!</p>
-      {error && <p className="text-red-500 mt-2">{error}</p>}{" "}
+      {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   );
 };
