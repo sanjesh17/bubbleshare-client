@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Avatar from "../assets/user.png";
 import { Sparkles, LogOut } from "lucide-react";
+import FullScreenLoader from "./FullScreenLoader";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -38,7 +39,7 @@ const Profile = () => {
     fetchUserData();
   }, []);
 
-  if (loading) return <p className="text-center">Loading...</p>;
+  if (loading) return <FullScreenLoader />;
 
   return (
     <div>

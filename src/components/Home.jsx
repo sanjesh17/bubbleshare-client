@@ -4,17 +4,19 @@ import Bg from "../assets/LoginScreen.png";
 import Bubbles from "./Bubbles";
 import BubbleDetails from "./BubbleDetails";
 import { CloudOff } from "lucide-react";
+import FullScreenLoader from "./FullScreenLoader";
 
 const Home = () => {
   const [bubbles, setBubbles] = useState([]);
   const [selectedBubbleId, setSelectedBubbleId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchBubbles = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) return;
-
+        setLoading(true);
         const response = await fetch(
           "https://bubbleshare-be.onrender.com/bubbles",
           {
@@ -30,6 +32,8 @@ const Home = () => {
         setBubbles(data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -67,7 +71,9 @@ const Home = () => {
       className="h-screen w-full bg-cover bg-center fixed top-0 left-0 overflow-scroll p-4 pb-24"
       style={{ backgroundImage: `url(${Bg})` }}
     >
-      {bubbles.length > 0 ? (
+      {loading && <FullScreenLoader />}
+
+      {!loading && bubbles.length > 0 ? (
         <div className="flex flex-col gap-6">
           {bubbles.map((bubble, index) => (
             <motion.div
@@ -92,11 +98,11 @@ const Home = () => {
             </motion.div>
           ))}
         </div>
-      ) : (
+      ) : !loading ? (
         <div className="h-screen flex flex-col justify-center items-center pb-18">
           <CloudOff className="w-60 h-60 mx-auto opacity-20" />
         </div>
-      )}
+      ) : null}
 
       {selectedBubbleId && (
         <BubbleDetails
