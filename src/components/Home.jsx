@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Bg from "../assets/LoginScreen.png";
 import Bubbles from "./Bubbles";
 import BubbleDetails from "./BubbleDetails";
+import { CloudOff } from "lucide-react";
 
 const Home = () => {
   const [bubbles, setBubbles] = useState([]);
@@ -66,30 +67,36 @@ const Home = () => {
       className="h-screen w-full bg-cover bg-center fixed top-0 left-0 overflow-scroll p-4 pb-24"
       style={{ backgroundImage: `url(${Bg})` }}
     >
-      <div className="flex flex-col gap-6">
-        {bubbles.map((bubble, index) => (
-          <motion.div
-            key={bubble.folderId}
-            className={`flex ${
-              index % 2 === 0 ? "justify-start" : "justify-end"
-            }`}
-            initial={{ y: 0 }}
-            animate={{ y: [0, -5, 5, 0] }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: index * 0.3,
-            }}
-          >
-            <Bubbles
-              bubble={bubble}
-              onClick={setSelectedBubbleId}
-              onDelete={deleteBubble}
-            />
-          </motion.div>
-        ))}
-      </div>
+      {bubbles.length > 0 ? (
+        <div className="flex flex-col gap-6">
+          {bubbles.map((bubble, index) => (
+            <motion.div
+              key={bubble.folderId}
+              className={`flex ${
+                index % 2 === 0 ? "justify-start" : "justify-end"
+              }`}
+              initial={{ y: 0 }}
+              animate={{ y: [0, -5, 5, 0] }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: index * 0.3,
+              }}
+            >
+              <Bubbles
+                bubble={bubble}
+                onClick={setSelectedBubbleId}
+                onDelete={deleteBubble}
+              />
+            </motion.div>
+          ))}
+        </div>
+      ) : (
+        <div className="h-screen flex flex-col justify-center items-center pb-18">
+          <CloudOff className="w-60 h-60 mx-auto opacity-20" />
+        </div>
+      )}
 
       {selectedBubbleId && (
         <BubbleDetails

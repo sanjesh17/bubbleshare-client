@@ -5,6 +5,7 @@ import Bubbles from "../components/Bubbles";
 import BubbleDetails from "../components/BubbleDetails";
 import Navigation from "../components/Navigation";
 import withPageTransition from "../HOC/WithPageTransition";
+import { CloudOff } from "lucide-react";
 
 const SharedBubblesPage = () => {
   const [sharedBubbles, setSharedBubbles] = useState([]);
@@ -43,30 +44,36 @@ const SharedBubblesPage = () => {
         className="h-screen w-full bg-cover bg-center fixed top-0 left-0 overflow-scroll p-4 pb-24"
         style={{ backgroundImage: `url(${Bg})` }}
       >
-        <div className="flex flex-col gap-6">
-          {sharedBubbles.map((bubble, index) => (
-            <motion.div
-              key={bubble.folderId}
-              className={`flex ${
-                index % 2 === 0 ? "justify-start" : "justify-end"
-              }`}
-              initial={{ y: 0 }}
-              animate={{ y: [0, -5, 5, 0] }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: index * 0.3,
-              }}
-            >
-              <Bubbles
-                bubble={bubble}
-                onClick={() => setSelectedBubbleId(bubble.folderId)}
-                shared={true}
-              />
-            </motion.div>
-          ))}
-        </div>
+        {sharedBubbles.length > 0 ? (
+          <div className="flex flex-col gap-6">
+            {sharedBubbles.map((bubble, index) => (
+              <motion.div
+                key={bubble.folderId}
+                className={`flex ${
+                  index % 2 === 0 ? "justify-start" : "justify-end"
+                }`}
+                initial={{ y: 0 }}
+                animate={{ y: [0, -5, 5, 0] }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: index * 0.3,
+                }}
+              >
+                <Bubbles
+                  bubble={bubble}
+                  onClick={() => setSelectedBubbleId(bubble.folderId)}
+                  shared={true}
+                />
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="h-screen flex flex-col justify-center items-center pb-18">
+            <CloudOff className="w-60 h-60 mx-auto opacity-20" />
+          </div>
+        )}
 
         {selectedBubbleId && (
           <BubbleDetails
