@@ -2,6 +2,7 @@ import React from "react";
 import CreateBubble from "../components/CreateBubble";
 import Navigation from "../components/Navigation";
 import Bg from "../assets/LoginScreen.png";
+import withPageTransition from "../HOC/WithPageTransition";
 
 const CreateBubblePage = () => {
   return (
@@ -15,4 +16,4 @@ const CreateBubblePage = () => {
   );
 };
 
-export default CreateBubblePage;
+export default withPageTransition(CreateBubblePage);

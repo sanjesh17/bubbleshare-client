@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // For navigation
 import LoginBg from "../assets/LoginScreen.png";
 import Logo from "../assets/BUBBLE.png";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate(); // Redirect user after successful registration
@@ -78,12 +79,16 @@ const Register = () => {
           Register
         </button>
       </form>
-
+      <div className="flex items-center space-x-1 mt-2">
+        <p>Already have an account?</p>
+        <Link to="/login">
+          <p className="text-blue-800">Login</p>
+        </Link>
+      </div>
+      <p className="text-black/50 mt-2">Get Started!</p>
+      <p className="text-black/50 mt-[-6px]">Your high-res world awaits!</p>
       {error && <p className="text-red-500 mt-2">{error}</p>}
       {success && <p className="text-green-500 mt-2">{success}</p>}
-
-      <p className="text-black/50 mt-4">Get Started!</p>
-      <p className="text-black/50 mt-[-6px]">Your high-res world awaits!</p>
     </div>
   );
 };

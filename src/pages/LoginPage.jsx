@@ -1,5 +1,6 @@
 import React from "react";
 import Login from "../components/Login";
+import withPageTransition from "../HOC/WithPageTransition";
 
 const LoginPage = () => {
   return (
@@ -9,4 +10,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default withPageTransition(LoginPage);

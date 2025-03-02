@@ -4,6 +4,7 @@ import Bg from "../assets/LoginScreen.png";
 import Bubbles from "../components/Bubbles";
 import BubbleDetails from "../components/BubbleDetails";
 import Navigation from "../components/Navigation";
+import withPageTransition from "../HOC/WithPageTransition";
 
 const SharedBubblesPage = () => {
   const [sharedBubbles, setSharedBubbles] = useState([]);
@@ -80,4 +81,4 @@ const SharedBubblesPage = () => {
   );
 };
 
-export default SharedBubblesPage;
+export default withPageTransition(SharedBubblesPage);

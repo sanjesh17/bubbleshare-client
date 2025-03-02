@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // For navigation
+import { Link, useNavigate } from "react-router-dom"; // For navigation
 import Logo from "../assets/BUBBLE.png";
 import LoginBg from "../assets/LoginScreen.png";
 
@@ -11,7 +11,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(""); // Reset previous errors
+    setError("");
 
     try {
       const response = await fetch(
@@ -69,10 +69,15 @@ const Login = () => {
           Login
         </button>
       </form>
-      {error && <p className="text-red-500 mt-2">{error}</p>}{" "}
-      {/* Display error */}
-      <p className="text-black/50 mt-4">Ready to dive in?</p>
+      <div className="flex items-center space-x-1 mt-2">
+        <p>Don't have an account?</p>
+        <Link to="/register">
+          <p className="text-blue-800">Sign Up</p>
+        </Link>
+      </div>
+      <p className="text-black/50 mt-1">Ready to dive in?</p>
       <p className="text-black/50 mt-[-6px]">Your high-res world awaits!</p>
+      {error && <p className="text-red-500 mt-2">{error}</p>}{" "}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import Register from "../components/Register";
+import withPageTransition from "../HOC/WithPageTransition";
 
 const RegisterPage = () => {
   return (
@@ -9,4 +10,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default withPageTransition(RegisterPage);

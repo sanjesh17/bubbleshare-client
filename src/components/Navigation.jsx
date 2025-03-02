@@ -1,26 +1,22 @@
-import React, { useState } from "react";
 import { Cloudy, CloudUpload, Plus, UserRound, ShieldPlus } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navigation = () => {
-  const [activeTab, setActiveTab] = useState("Bubbles");
+  const location = useLocation();
 
   return (
     <div className="w-full fixed bottom-0 font-primary flex justify-between px-4 py-1 bg-white/90 backdrop-blur-xl shadow-[0px_8px_12px_blue]">
       <Link to="/" className="no-underline focus:outline-none flex">
-        <div
-          className="flex flex-col justify-center items-center cursor-pointer"
-          onClick={() => setActiveTab("Bubbles")}
-        >
+        <div className="flex flex-col justify-center items-center cursor-pointer">
           <Cloudy
             size={32}
             className={
-              activeTab === "Bubbles" ? "text-blue-600" : "text-gray-500"
+              location.pathname === "/" ? "text-blue-600" : "text-gray-500"
             }
           />
           <p
             className={`font-semibold text-[13px] ${
-              activeTab === "Bubbles" ? "text-blue-600" : "text-gray-500"
+              location.pathname === "/" ? "text-blue-600" : "text-gray-500"
             }`}
           >
             BUBBLES
@@ -29,19 +25,20 @@ const Navigation = () => {
       </Link>
 
       <Link to="/shared" className="no-underline focus:outline-none flex">
-        <div
-          className="flex flex-col justify-center items-center cursor-pointer"
-          onClick={() => setActiveTab("Shared")}
-        >
+        <div className="flex flex-col justify-center items-center cursor-pointer">
           <CloudUpload
             size={32}
             className={
-              activeTab === "Shared" ? "text-blue-600" : "text-gray-500"
+              location.pathname === "/shared"
+                ? "text-blue-600"
+                : "text-gray-500"
             }
           />
           <p
             className={`font-semibold text-[13px] ${
-              activeTab === "Shared" ? "text-blue-600" : "text-gray-500"
+              location.pathname === "/shared"
+                ? "text-blue-600"
+                : "text-gray-500"
             }`}
           >
             SHARED
@@ -55,43 +52,49 @@ const Navigation = () => {
         </div>
       </Link>
 
-      <div
-        className="flex flex-col justify-center items-center cursor-pointer"
-        onClick={() => setActiveTab("Upgrade")}
-      >
-        <ShieldPlus
-          size={32}
-          className={
-            activeTab === "Upgrade" ? "text-blue-600" : "text-gray-500"
-          }
-        />
-        <p
-          className={`font-semibold text-[13px] ${
-            activeTab === "Upgrade" ? "text-blue-600" : "text-gray-500"
-          }`}
-        >
-          UPGRADE
-        </p>
-      </div>
+      <Link to="/upgrade" className="no-underline focus:outline-none flex">
+        <div className="flex flex-col justify-center items-center cursor-pointer">
+          <ShieldPlus
+            size={32}
+            className={
+              location.pathname === "/upgrade"
+                ? "text-blue-600"
+                : "text-gray-500"
+            }
+          />
+          <p
+            className={`font-semibold text-[13px] ${
+              location.pathname === "/upgrade"
+                ? "text-blue-600"
+                : "text-gray-500"
+            }`}
+          >
+            UPGRADE
+          </p>
+        </div>
+      </Link>
 
-      <div
-        className="flex flex-col justify-center items-center cursor-pointer"
-        onClick={() => setActiveTab("Profile")}
-      >
-        <UserRound
-          size={32}
-          className={
-            activeTab === "Profile" ? "text-blue-600" : "text-gray-500"
-          }
-        />
-        <p
-          className={`font-semibold text-[13px] ${
-            activeTab === "Profile" ? "text-blue-600" : "text-gray-500"
-          }`}
-        >
-          PROFILE
-        </p>
-      </div>
+      <Link to="/profile" className="no-underline focus:outline-none flex">
+        <div className="flex flex-col justify-center items-center cursor-pointer">
+          <UserRound
+            size={32}
+            className={
+              location.pathname === "/profile"
+                ? "text-blue-600"
+                : "text-gray-500"
+            }
+          />
+          <p
+            className={`font-semibold text-[13px] ${
+              location.pathname === "/profile"
+                ? "text-blue-600"
+                : "text-gray-500"
+            }`}
+          >
+            PROFILE
+          </p>
+        </div>
+      </Link>
     </div>
   );
 };
