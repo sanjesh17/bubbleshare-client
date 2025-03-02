@@ -5,17 +5,19 @@ import Logo from "../assets/BUBBLE.png";
 import { Link } from "react-router-dom";
 
 const Register = () => {
-  const navigate = useNavigate(); // Redirect user after successful registration
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
+    setLoading(true);
 
     try {
       const response = await fetch(
@@ -34,9 +36,11 @@ const Register = () => {
       }
 
       setSuccess("Registration successful! Redirecting...");
-      setTimeout(() => navigate("/login"), 2000); // Redirect to login page after 2s
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,11 +78,17 @@ const Register = () => {
         />
         <button
           type="submit"
-          className="px-12 py-3 bg-gradient-to-b from-[#5172ff] to-[#003dff] text-white rounded-3xl shadow-[0px_4px_12px_#CCCCCC] text-xl mt-4"
+          className="px-12 py-3 bg-gradient-to-b from-[#5172ff] to-[#003dff] text-white rounded-3xl shadow-[0px_4px_12px_#CCCCCC] text-xl mt-4 flex justify-center items-center"
+          disabled={loading}
         >
-          Register
+          {loading ? (
+            <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          ) : (
+            "Register"
+          )}
         </button>
       </form>
+
       <div className="flex items-center space-x-1 mt-2">
         <p>Already have an account?</p>
         <Link to="/login">

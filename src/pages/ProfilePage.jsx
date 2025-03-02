@@ -1,6 +1,7 @@
 import React from "react";
 import Profile from "../components/Profile";
 import Navigation from "../components/Navigation";
+import withPageTransition from "../HOC/WithPageTransition";
 
 const ProfilePage = () => {
   return (
@@ -11,4 +12,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default withPageTransition(ProfilePage);
