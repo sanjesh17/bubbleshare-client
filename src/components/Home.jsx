@@ -18,7 +18,7 @@ const Home = () => {
         if (!token) return;
         setLoading(true);
         const response = await fetch(
-          "https://bubbleshare-be.onrender.com/bubbles",
+          `${import.meta.env.VITE_BACKEND_URL}/bubbles`,
           {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` },
@@ -46,7 +46,7 @@ const Home = () => {
       if (!token) return;
 
       const response = await fetch(
-        `https://bubbleshare-be.onrender.com/bubbles/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/bubbles/${id}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },

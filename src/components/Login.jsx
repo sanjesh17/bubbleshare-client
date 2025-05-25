@@ -17,7 +17,7 @@ const Login = () => {
 
     try {
       const response = await fetch(
-        "https://bubbleshare-be.onrender.com/login",
+        `${import.meta.env.VITE_BACKEND_URL}/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

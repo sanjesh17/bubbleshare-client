@@ -21,7 +21,7 @@ const Register = () => {
 
     try {
       const response = await fetch(
-        "https://bubbleshare-be.onrender.com/register",
+        `${import.meta.env.VITE_BACKEND_URL}/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

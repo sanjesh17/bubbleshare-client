@@ -21,7 +21,7 @@ const Bubbles = ({ bubble, onClick, onDelete, shared = false }) => {
     setIsSharing(true);
     try {
       const response = await fetch(
-        `https://bubbleshare-be.onrender.com/bubbles/${bubble.folderId}/share`,
+        `${import.meta.env.VITE_BACKEND_URL}/bubbles/${bubble.folderId}/share`,
         {
           method: "POST",
           headers: {

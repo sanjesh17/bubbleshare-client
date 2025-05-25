@@ -18,7 +18,7 @@ const Profile = () => {
       if (!token) return handleLogOut();
 
       try {
-        const res = await fetch("https://bubbleshare-be.onrender.com/profile", {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

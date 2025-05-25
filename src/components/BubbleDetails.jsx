@@ -21,8 +21,8 @@ const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
       if (!token) throw new Error("Unauthorized access");
 
       const endpoint = shared
-        ? `https://bubbleshare-be.onrender.com/bubbles/${bubbleId}/photos`
-        : `https://bubbleshare-be.onrender.com/bubbles/${bubbleId}/photos`;
+        ? `${import.meta.env.VITE_BACKEND_URL}/bubbles/${bubbleId}/photos`
+        : `${import.meta.env.VITE_BACKEND_URL}/bubbles/${bubbleId}/photos`;
 
       const response = await fetch(endpoint, {
         method: "GET",
@@ -69,7 +69,7 @@ const BubbleDetails = ({ bubbleId, onClose, shared = false }) => {
       formData.append("file", file);
 
       const response = await fetch(
-        `https://bubbleshare-be.onrender.com/bubbles/${bubbleId}/upload`,
+        `${import.meta.env.VITE_BACKEND_URL}/bubbles/${bubbleId}/upload`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },

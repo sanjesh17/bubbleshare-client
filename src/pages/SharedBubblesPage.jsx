@@ -18,7 +18,7 @@ const SharedBubblesPage = () => {
         if (!token) return;
 
         const response = await fetch(
-          "https://bubbleshare-be.onrender.com/shared-bubbles",
+          `${import.meta.env.VITE_BACKEND_URL}/shared-bubbles`,
           {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` },

@@ -17,7 +17,7 @@ const CreateBubble = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://bubbleshare-be.onrender.com/bubbles",
+        `${import.meta.env.VITE_BACKEND_URL}/bubbles`,
         {
           method: "POST",
           headers: {
